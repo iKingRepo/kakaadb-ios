@@ -65,7 +65,7 @@ struct TerminalView: View {
                 .padding(14)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-            .onChange(of: lines) { _ in
+            .onChange(of: lines.count) { _ in
                 if let last = lines.last {
                     withAnimation(.none) { proxy.scrollTo(last.id, anchor: .bottom) }
                 }

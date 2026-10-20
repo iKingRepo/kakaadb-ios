@@ -60,24 +60,22 @@ struct FilesView: View {
             }
             .navigationTitle(L("files.title"))
             .background(Color.kakaBackground)
-            .toolbar {
-                ToolbarItemGroup(placement: .navigationBarTrailing) {
-                    Button {
-                        pickUpload = true
-                    } label: {
-                        Image(systemName: "square.and.arrow.up.fill")
-                            .foregroundStyle(Color.kakaBlueDeep)
-                    }
-                    .disabled(!session.connected)
-                    Button {
-                        showNewFolder = true
-                    } label: {
-                        Image(systemName: "folder.badge.plus")
-                            .foregroundStyle(Color.kakaBlueDeep)
-                    }
-                    .disabled(!session.connected)
+            .navigationBarItems(trailing: HStack(spacing: 14) {
+                Button {
+                    pickUpload = true
+                } label: {
+                    Image(systemName: "square.and.arrow.up.fill")
+                        .foregroundStyle(Color.kakaBlueDeep)
                 }
-            }
+                .disabled(!session.connected)
+                Button {
+                    showNewFolder = true
+                } label: {
+                    Image(systemName: "folder.badge.plus")
+                        .foregroundStyle(Color.kakaBlueDeep)
+                }
+                .disabled(!session.connected)
+            })
             .fileImporter(isPresented: $pickUpload, allowedContentTypes: [.item], allowsMultipleSelection: true) { result in
                 if case .success(let urls) = result {
                     uploadFiles(urls)
@@ -108,7 +106,7 @@ struct FilesView: View {
             } message: {
                 Text(L("files.delete.confirm.message"))
             }
-            .onChange(of: session.connected) { _, connected in
+            .onChange(of: session.connected) { connected in
                 if connected { load() }
             }
             .onAppear {

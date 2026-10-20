@@ -62,18 +62,14 @@ struct AppsView: View {
             }
             .navigationTitle(L("apps.title"))
             .background(Color.kakaBackground)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        router.appsPickInstall = false
-                        pickAPK = true
-                    } label: {
-                        Image(systemName: "square.and.arrow.down.fill")
-                            .foregroundStyle(Color.kakaBlueDeep)
-                    }
-                    .disabled(!session.connected)
-                }
+            .navigationBarItems(trailing: Button {
+                router.appsPickInstall = false
+                pickAPK = true
+            } label: {
+                Image(systemName: "square.and.arrow.down.fill")
+                    .foregroundStyle(Color.kakaBlueDeep)
             }
+            .disabled(!session.connected))
             .fileImporter(isPresented: $pickAPK, allowedContentTypes: [.init(filenameExtension: "apk")!],
                           allowsMultipleSelection: false) { result in
                 if case .success(let urls) = result, let url = urls.first {
@@ -84,7 +80,7 @@ struct AppsView: View {
             .onReceive(NotificationCenter.default.publisher(for: Notification.Name("KakaRunInstall"))) { _ in
                 pickAPK = true
             }
-            .onChange(of: router.appsPickInstall) { _, newValue in
+            .onChange(of: router.appsPickInstall) { newValue in
                 if newValue {
                     router.appsPickInstall = false
                     pickAPK = true
