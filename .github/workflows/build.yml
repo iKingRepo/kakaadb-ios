@@ -13,6 +13,8 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Fetch prebuilt libadb
+        env:
+          GH_TOKEN: ${{ secrets.LIBADB_TOKEN }}
         run: bash scripts/fetch_libadb.sh
 
       - name: Install xcodegen
