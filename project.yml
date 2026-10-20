@@ -1,0 +1,49 @@
+name: KakaADB
+options:
+  bundleIdPrefix: com.kaka
+  deploymentTarget:
+    iOS: "16.0"
+  createIntermediateGroups: true
+
+targets:
+  KakaADB:
+    type: application
+    platform: iOS
+    deploymentTarget: "16.0"
+    sources:
+      - path: KakaADB
+        excludes:
+          - Resources/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.kaka.adb
+        PRODUCT_NAME: KakaADB
+        INFOPLIST_FILE: KakaADB/Resources/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        TARGETED_DEVICE_FAMILY: "1"
+        SUPPORTED_PLATFORMS: iphoneos
+        ARCHS: arm64
+        ONLY_ACTIVE_ARCH: YES
+        CODE_SIGNING_ALLOWED: NO
+        CODE_SIGNING_REQUIRED: NO
+        CODE_SIGN_IDENTITY: ""
+        DEVELOPMENT_TEAM: ""
+        SWIFT_VERSION: "5.9"
+        IPHONEOS_DEPLOYMENT_TARGET: "16.0"
+        ENABLE_BITCODE: NO
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        SWIFT_OBJC_BRIDGING_HEADER: KakaADB/KakaADB-Bridging-Header.h
+        HEADER_SEARCH_PATHS:
+          - "$(SRCROOT)/Vendor/include"
+        LIBRARY_SEARCH_PATHS:
+          - "$(SRCROOT)/Vendor/lib"
+        OTHER_LDFLAGS:
+          - "-ladb"
+          - "-lc++"
+          - "-lz"
+          - "-lresolv"
+          - "-framework"
+          - "Security"
+          - "-framework"
+          - "Network"
