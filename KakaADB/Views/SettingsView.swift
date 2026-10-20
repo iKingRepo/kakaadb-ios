@@ -72,7 +72,7 @@ struct SettingsView: View {
                 Section(L("settings.connection")) {
                     Toggle(L("settings.auto.connect"), isOn: $settings.autoConnect)
                     Toggle(L("settings.keep.alive"), isOn: $settings.keepAlive)
-                        .onChange(of: settings.keepAlive) { _, _ in
+                        .onChange(of: settings.keepAlive) { _ in
                             session.startKeepAliveIfNeeded()
                         }
                     HStack {
@@ -100,7 +100,7 @@ struct SettingsView: View {
                         Text("简体中文").tag("zh-Hans")
                         Text("English").tag("en")
                     }
-                    .onChange(of: settings.languageRaw) { _, newValue in
+                    .onChange(of: settings.languageRaw) { newValue in
                         guard !newValue.isEmpty else { return }
                         UserDefaults.standard.set([newValue], forKey: "AppleLanguages")
                         UserDefaults.standard.synchronize()
@@ -275,10 +275,10 @@ struct DeviceInfoView: View {
             .navigationTitle(L("commands.device.info"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .navigationBarLeading) {
                     Button(L("common.close")) { dismiss() }
                 }
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                         session.refreshDeviceInfo()
                     } label: {
@@ -348,7 +348,7 @@ struct AboutView: View {
             .navigationTitle(L("settings.about"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .navigationBarLeading) {
                     Button(L("common.close")) { dismiss() }
                 }
             }
@@ -443,7 +443,7 @@ struct ProView: View {
             .navigationTitle(L("pro.title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .navigationBarLeading) {
                     Button(L("common.close")) { dismiss() }
                 }
             }

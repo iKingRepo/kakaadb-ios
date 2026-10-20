@@ -28,7 +28,7 @@ struct TerminalView: View {
             .navigationTitle(L("commands.shell.terminal"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .navigationBarLeading) {
                     Button(L("common.close")) { dismiss() }
                 }
             }
@@ -65,7 +65,7 @@ struct TerminalView: View {
                 .padding(14)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-            .onChange(of: lines) { _, _ in
+            .onChange(of: lines) { _ in
                 if let last = lines.last {
                     withAnimation(.none) { proxy.scrollTo(last.id, anchor: .bottom) }
                 }

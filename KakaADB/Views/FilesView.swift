@@ -61,7 +61,7 @@ struct FilesView: View {
             .navigationTitle(L("files.title"))
             .background(Color.kakaBackground)
             .toolbar {
-                ToolbarItemGroup(placement: .topBarTrailing) {
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button {
                         pickUpload = true
                     } label: {

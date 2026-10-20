@@ -91,10 +91,10 @@ struct HistoryView: View {
             .navigationTitle(L("history.title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .navigationBarLeading) {
                     Button(L("common.close")) { dismiss() }
                 }
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .navigationBarTrailing) {
                     if !history.items.isEmpty {
                         Button {
                             history.clearAll()

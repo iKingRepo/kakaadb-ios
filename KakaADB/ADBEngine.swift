@@ -41,16 +41,19 @@ final class ADBEngine {
     // MARK: 同步核心（仅队列内调用）
 
     func runSync(_ args: [String]) -> ADBResult {
-        var cstrs: [UnsafeMutablePointer<CChar>?] = args.map { strdup($0) }
+        // argv 必须是可变的指针数组：头文件里是 const char**，
+        // Clang 导入 Swift 后形参类型为 UnsafeMutablePointer<UnsafePointer<CChar>?>。
+        let raw = args.map { strdup($0) }
+        var cstrs: [UnsafePointer<CChar>?] = raw.map { UnsafePointer($0) }
         cstrs.append(nil)   // argv 需要 NULL 结尾
-        defer { cstrs.forEach { free($0) } }
+        defer {
+            for p in raw where p != nil { free(p) }
+        }
 
         var out: UnsafeMutablePointer<CChar>? = nil
         var outSize: Int = 0
         let ret: Int32 = cstrs.withUnsafeBufferPointer { buf in
-            // [UnsafeMutablePointer<CChar>?] -> UnsafePointer<UnsafePointer<CChar>?>（布局一致，直接内存绑定）
-            let argv = UnsafeRawPointer(buf.baseAddress!)
-                .assumingMemoryBound(to: UnsafePointer<CChar>?.self)
+            let argv = UnsafeMutablePointer(mutating: buf.baseAddress!)
             return adb_commandline_porting(&out, &outSize, Int32(args.count), argv)
         }
         var text = ""

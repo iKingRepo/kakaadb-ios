@@ -63,7 +63,7 @@ struct AppsView: View {
             .navigationTitle(L("apps.title"))
             .background(Color.kakaBackground)
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                         router.appsPickInstall = false
                         pickAPK = true

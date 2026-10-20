@@ -336,7 +336,7 @@ struct CommandOutputView: View {
             .navigationTitle(title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                         UIPasteboard.general.string = text
                         ToastCenter.shared.show(L("toast.copied"))
@@ -345,7 +345,7 @@ struct CommandOutputView: View {
                             .foregroundStyle(Color.kakaBlueDeep)
                     }
                 }
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .navigationBarLeading) {
                     Button(L("common.close")) { dismiss() }
                 }
             }
@@ -429,7 +429,7 @@ struct ScreenshotPreviewView: View {
             .navigationTitle(L("commands.screenshot"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .navigationBarLeading) {
                     Button(L("common.done")) { dismiss() }
                 }
             }
@@ -493,7 +493,7 @@ struct ScreenRecordPreviewView: View {
             .navigationTitle(L("commands.screen.record"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .navigationBarLeading) {
                     Button(L("common.done")) { dismiss() }
                 }
             }

@@ -44,7 +44,7 @@ struct ConnectView: View {
             .navigationTitle(L("connect.title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .navigationBarTrailing) {
                     Button(L("common.close")) { dismiss() }
                 }
             }
@@ -230,7 +230,7 @@ struct HelpStepsView: View {
             .navigationTitle(title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .navigationBarTrailing) {
                     Button(L("common.done")) { dismiss() }
                 }
             }

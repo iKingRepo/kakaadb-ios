@@ -24,7 +24,7 @@ struct HomeView: View {
             .background(Color.kakaBackground)
             .navigationTitle(L("app.name"))
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                         router.showHistory = true
                     } label: {
