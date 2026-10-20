@@ -1,0 +1,82 @@
+name: Build KakaADB IPA
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch prebuilt libadb
+        run: bash scripts/fetch_libadb.sh
+
+      - name: Install xcodegen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: |
+          xcodegen generate
+          grep -m1 objectVersion KakaADB.xcodeproj/project.pbxproj
+
+      - name: Pin xcodegen objectVersion (Xcode 16 兼容)
+        run: |
+          python3 - <<'PY'
+          import re
+          p = "KakaADB.xcodeproj/project.pbxproj"
+          s = open(p, encoding="utf-8").read()
+          m = re.search(r"objectVersion = (\d+);", s)
+          print("before:", m.group(1) if m else "none")
+          if m and int(m.group(1)) > 56:
+              s = re.sub(r"objectVersion = \d+;", "objectVersion = 56;", s, count=1)
+              open(p, "w", encoding="utf-8").write(s)
+          m2 = re.search(r"objectVersion = (\d+);", s)
+          print("after :", m2.group(1) if m2 else "none")
+          PY
+
+      - name: Show Xcode version
+        run: xcodebuild -version
+
+      - name: Build app (unsigned)
+        run: |
+          set -o pipefail
+          xcodebuild -project KakaADB.xcodeproj -scheme KakaADB \
+            -configuration Release -sdk iphoneos \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
+            build 2>&1 | tee /tmp/xcodebuild.log | tail -n 120
+
+      - name: Package IPA
+        if: success()
+        run: |
+          set -euo pipefail
+          APP="build/Build/Products/Release-iphoneos/KakaADB.app"
+          test -d "$APP"
+          rm -rf Payload KakaADB.ipa
+          mkdir -p Payload
+          cp -R "$APP" Payload/
+          zip -qry KakaADB.ipa Payload
+          ls -l KakaADB.ipa
+          shasum -a 256 KakaADB.ipa
+          file Payload/KakaADB.app/KakaADB
+
+      - name: Upload IPA
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: KakaADB-ipa
+          path: KakaADB.ipa
+          if-no-files-found: error
+
+      - name: Upload build log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: |
+            /tmp/xcodebuild.log
+          if-no-files-found: ignore
