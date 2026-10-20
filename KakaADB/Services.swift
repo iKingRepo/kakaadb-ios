@@ -98,7 +98,7 @@ final class Session: ObservableObject {
     }
 
     private func handleConnectResult(_ result: ADBResult, endpoint: String, ip: String, port: Int,
-                                     finish: (Bool, String) -> Void) {
+                                     finish: @escaping (Bool, String) -> Void) {
         let out = result.output
         let lowered = out.lowercased()
         if result.succeeded && (lowered.contains("connected") || lowered.contains("already")) {
