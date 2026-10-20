@@ -1,0 +1,11 @@
+# 构建产物
+build/
+DerivedData/
+*.ipa
+
+# xcodegen 生成（不提交，CI 自动生成）
+KakaADB.xcodeproj/
+
+# 系统
+.DS_Store
+xcuserdata/
